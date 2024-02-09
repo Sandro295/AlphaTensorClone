@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import torch
-import math
+from torch.utils.data import Dataset
 from torch.nn import functional as F
-from pathlib import Path
+import math
 import numpy as np
 
-from torch.utils.data import Dataset
-
+from pathlib import Path
 import shutil
 import os
 import tempfile
@@ -25,7 +24,11 @@ SAVE_DIR_SYNT = "./.data_alpha_tensor/synthetic_data"
 SAVE_COB_DIR = "./.data_alpha_tensor/cob_matrices"
 
 
-# In[5]:
+# # Neural net
+# ## Torso a.k.a. the transformer
+# https://pytorch.org/tutorials/beginner/transformer_tutorial.html  
+
+# In[2]:
 
 
 class PositionEncoding(torch.nn.Module):
@@ -50,7 +53,7 @@ class PositionEncoding(torch.nn.Module):
         return x
 
 
-# In[6]:
+# In[3]:
 
 
 class AttentionDenseBlock(torch.nn.Module):
@@ -68,7 +71,7 @@ class AttentionDenseBlock(torch.nn.Module):
         return x + self.linear_final(x_temp)
 
 
-# In[7]:
+# In[4]:
 
 
 class AttentionHead(torch.nn.Module):
@@ -96,7 +99,7 @@ class AttentionHead(torch.nn.Module):
         return output
 
 
-# In[8]:
+# In[5]:
 
 
 class AlphaMultiHeadAttention(torch.nn.Module):
@@ -104,8 +107,8 @@ class AlphaMultiHeadAttention(torch.nn.Module):
         self,
         x_dim: int,
         y_dim: int,
-        proj_dim: int = 32,
-        n_heads: int = 16,
+        proj_dim: int = 16,
+        n_heads: int = 8,
         multiplier: int = 4,
     ):
         # x_dim = size of the last dimension of x
@@ -113,27 +116,23 @@ class AlphaMultiHeadAttention(torch.nn.Module):
         super().__init__()
         self.norm_layer_x = torch.nn.LayerNorm(x_dim)
         self.norm_layer_y = torch.nn.LayerNorm(y_dim)
-        self.module_list = torch.nn.ModuleList(
-            [AttentionHead(x_dim, y_dim, proj_dim) for _ in range(n_heads)]
-        )
+        self.module_list = torch.nn.ModuleList([AttentionHead(x_dim, y_dim, proj_dim) for _ in range(n_heads)])
         self.linear = torch.nn.Linear(n_heads * proj_dim, x_dim)
 
         self.dense = AttentionDenseBlock(x_dim, multiplier)
 
-    def forward(
-        self, x: torch.nn.Module, y: torch.nn.Module, mask: bool = False
-    ):
+    def forward(self, x: torch.nn.Module, y: torch.nn.Module, mask: bool = False):
         # x.size = (Nx, c1), y.size = (Ny, c2)
         x_norm = self.norm_layer_x(x)
         y_norm = self.norm_layer_y(y)
-        temp = torch.cat(
-            [layer(x_norm, y_norm, mask) for layer in self.module_list], dim=-1
-        )
+        temp = torch.cat([layer(x_norm, y_norm, mask) for layer in self.module_list], dim=-1)
         x = x + self.linear(temp)
         return self.dense(x)
 
 
-# In[9]:
+# ## Policy
+
+# In[6]:
 
 
 class PolicyHeadDoubleAttention(torch.nn.Module):
@@ -166,7 +165,7 @@ class PolicyHeadDoubleAttention(torch.nn.Module):
         return x
 
 
-# In[10]:
+# In[7]:
 
 
 class PolicyHeadCore(torch.nn.Module):
@@ -176,8 +175,8 @@ class PolicyHeadCore(torch.nn.Module):
         emb_dim: int,
         n_steps: int,
         n_logits: int,
-        n_feat: int = 32,
-        n_heads: int = 16,
+        n_feat: int = 16,
+        n_heads: int = 8,
         n_layers: int = 2,
     ):
         super().__init__()
@@ -202,7 +201,7 @@ class PolicyHeadCore(torch.nn.Module):
         return o, x
 
 
-# In[11]:
+# In[8]:
 
 
 def sample_from_logits(a):
@@ -274,11 +273,10 @@ class PolicyHead(torch.nn.Module):
         return self._train_forward(e, g)
 
 
-# # Value and Torso
-# Value head is a multilayer perceptron  
-# Torso is a transformer with multihead attention mechanism
+# ## Value
+# Value head is a multilayer perceptron
 
-# In[12]:
+# In[9]:
 
 
 class ValueHeadCore(torch.nn.Module):
@@ -291,7 +289,7 @@ class ValueHeadCore(torch.nn.Module):
         return self.relu(self.linear(x))
 
 
-# In[13]:
+# In[10]:
 
 
 class ValueHead(torch.nn.Module):
@@ -311,35 +309,7 @@ class ValueHead(torch.nn.Module):
         return self.linear(self.layers(x))
 
 
-# In[14]:
-
-
-class AttentionHead(torch.nn.Module):
-    def __init__(self, x_size: int, y_size: int, proj_dim: int):
-        # x_size = N_x
-        # y_size = N_y
-        super(AttentionHead, self).__init__()
-        self.proj_dim_isqrt = 1 / torch.sqrt(torch.tensor(proj_dim))
-        self.queries_proj_layer = torch.nn.Linear(x_size, proj_dim)
-        self.keys_proj_layer = torch.nn.Linear(y_size, proj_dim)
-        self.values_proj_layer = torch.nn.Linear(y_size, proj_dim)
-
-    def forward(self, x: torch.Tensor, y: torch.Tensor, mask: bool = False):
-        queries = self.queries_proj_layer(x)
-        keys = self.keys_proj_layer(y)
-        values = self.values_proj_layer(y)
-        attention = F.softmax(
-            torch.matmul(queries, keys.transpose(-2, -1))
-            * self.proj_dim_isqrt,
-            dim=-1,
-        )
-        if mask:
-            attention = torch.triu(attention, diagonal=1)
-        output = torch.matmul(attention, values)
-        return output
-
-
-# In[15]:
+# In[11]:
 
 
 class AttentionDenseBlock(torch.nn.Module):
@@ -357,7 +327,7 @@ class AttentionDenseBlock(torch.nn.Module):
         return x + self.linear_final(x_temp)
 
 
-# In[16]:
+# In[12]:
 
 
 class AlphaMultiHeadAttention(torch.nn.Module):
@@ -394,7 +364,7 @@ class AlphaMultiHeadAttention(torch.nn.Module):
         return self.dense(x)
 
 
-# In[17]:
+# In[13]:
 
 
 class TorsoAttentiveModes(torch.nn.Module):
@@ -420,7 +390,7 @@ class TorsoAttentiveModes(torch.nn.Module):
         return input_list
 
 
-# In[18]:
+# In[14]:
 
 
 class TorsoModel(torch.nn.Module):
@@ -484,7 +454,7 @@ class TorsoModel(torch.nn.Module):
         )
 
 
-# In[19]:
+# In[15]:
 
 
 class QuantileLoss(torch.nn.Module):
@@ -511,7 +481,7 @@ class ValueRiskManagement(torch.nn.Module):
         return torch.mean(q[:, j:], dim=-1)
 
 
-# In[20]:
+# In[16]:
 
 
 class AlphaTensorModel(torch.nn.Module):
@@ -543,12 +513,11 @@ class AlphaTensorModel(torch.nn.Module):
         )
         print("Build value head")
         self.value_head = ValueHead(
-            512
+            128
         )  # value dependent on num_head and proj_dim
         self.policy_loss_fn = torch.nn.CrossEntropyLoss(reduction="sum")
         self.quantile_loss_fn = QuantileLoss()
         self.risk_value_management = ValueRiskManagement()
-        print("Done building")
 
     @property
     def device(self):
@@ -610,7 +579,7 @@ class AlphaTensorModel(torch.nn.Module):
 
 # # Some utility funcs
 
-# In[21]:
+# In[17]:
 
 
 def get_scalars(input_tensor: torch.Tensor, t_step: int, with_bs: bool = True):
@@ -666,7 +635,7 @@ def map_triplet_to_action(
     return action
 
 
-# In[22]:
+# In[18]:
 
 
 # @torch.jit.script
@@ -702,7 +671,7 @@ def _single_action_to_triplet(
     return triplet
 
 
-# In[23]:
+# In[19]:
 
 
 def map_action_to_triplet(
@@ -745,7 +714,7 @@ def map_action_to_triplet(
     return triplets.reshape((*action_shape, final_size))
 
 
-# In[24]:
+# In[20]:
 
 
 def generate_synthetic_data(
@@ -793,14 +762,14 @@ def generate_synthetic_data(
 # # Datasets
 # 
 
-# In[25]:
+# In[21]:
 
 
 import tqdm
 from torch.utils.data import DataLoader
 
 
-# In[26]:
+# In[22]:
 
 
 def compute_move(triplets: Tuple[torch.Tensor, torch.Tensor, torch.Tensor]):
@@ -815,7 +784,7 @@ def compute_move(triplets: Tuple[torch.Tensor, torch.Tensor, torch.Tensor]):
     return u.reshape(-1, 1, 1) * v.reshape(1, -1, 1) * w.reshape(1, 1, -1)
 
 
-# In[27]:
+# In[23]:
 
 
 class SyntheticDataBuffer(Dataset):
@@ -950,7 +919,7 @@ class SyntheticDataBuffer(Dataset):
         return tensor
 
 
-# In[28]:
+# In[24]:
 
 
 class GameDataBuffer(Dataset):
@@ -1040,7 +1009,7 @@ class GameDataBuffer(Dataset):
         self.num_games = len(self.game_data)
 
 
-# In[29]:
+# In[25]:
 
 
 class TensorGameDataset(Dataset):
@@ -1251,7 +1220,7 @@ class TensorGameDataset(Dataset):
         return input_tensor
 
 
-# In[30]:
+# In[26]:
 
 
 def f_prob_distribution(size):
@@ -1270,7 +1239,7 @@ def f_prob_distribution(size):
     return tensor
 
 
-# In[31]:
+# In[27]:
 
 
 def get_change_basis_matrix(
@@ -1329,7 +1298,7 @@ class ChangeOfBasis:
             device (str): Name of the torch device to use.
             random_seed (int, optional): Random seed for reproducibility.
         """
-        self.tmp_dir = SAVE_COB_DIR
+        self.tmp_dir = Path(SAVE_COB_DIR)
         self.tmp_dir.mkdir(exist_ok=True, parents=True)
         for i, cob_matrix in enumerate(
             get_change_basis_matrix(
@@ -1384,14 +1353,14 @@ class ChangeOfBasis:
 
 # # MCTS
 
-# In[32]:
+# In[28]:
 
 
 def extract_present_state(state: torch.Tensor) -> torch.Tensor:
     return state[:, 0]
 
 
-# In[33]:
+# In[29]:
 
 
 def to_hash(tensor: torch.Tensor) -> str:
@@ -1430,7 +1399,7 @@ def record_action(tree_dict: Dict, state: str, action: str):
         tree_dict[state] = [action]
 
 
-# In[34]:
+# In[30]:
 
 
 def _recompose_possible_states(reduced_memory_states_dict: Dict):
@@ -1454,7 +1423,7 @@ def _recompose_possible_states(reduced_memory_states_dict: Dict):
     return possible_states
 
 
-# In[35]:
+# In[31]:
 
 
 def select_future_state(
@@ -1487,7 +1456,7 @@ def select_future_state(
     return possible_states[ucb.argmax()]
 
 
-# In[36]:
+# In[32]:
 
 
 def remove_duplicates(reducing_tensor: torch.Tensor):
@@ -1528,7 +1497,7 @@ def remove_duplicates(reducing_tensor: torch.Tensor):
     )
 
 
-# In[37]:
+# In[33]:
 
 
 def extract_children_states_from_actions(
@@ -1588,7 +1557,7 @@ def extract_children_states_from_actions(
     )
 
 
-# In[38]:
+# In[34]:
 
 
 def _reduce_memory_consumption_before_storing(
@@ -1608,7 +1577,20 @@ def _reduce_memory_consumption_before_storing(
     return storing_dict
 
 
-# In[39]:
+# In[35]:
+
+
+def game_is_finished(state):
+    """Tells if the game is finished or not.
+
+    Args:
+        state (torch.Tensor): The state of the game.
+    """
+    # state size (1, S, S, S)
+    return (state == 0).all()
+
+
+# In[36]:
 
 
 @torch.no_grad()
@@ -1726,7 +1708,7 @@ def backward_pass(trajectory, states_dict, leaf_q_value: torch.Tensor):
             N_s_a[:, not_dupl_index] += 1
 
 
-# In[40]:
+# In[37]:
 
 
 def monte_carlo_tree_search(
@@ -1775,20 +1757,7 @@ def monte_carlo_tree_search(
     return next_state
 
 
-# In[41]:
-
-
-def game_is_finished(state):
-    """Tells if the game is finished or not.
-
-    Args:
-        state (torch.Tensor): The state of the game.
-    """
-    # state size (1, S, S, S)
-    return (state == 0).all()
-
-
-# In[42]:
+# In[38]:
 
 
 @torch.no_grad() # not sure here
@@ -1823,7 +1792,7 @@ def compute_improved_policy(
     return policies
 
 
-# In[43]:
+# In[39]:
 
 
 def actor_prediction(
@@ -1888,7 +1857,7 @@ def actor_prediction(
     return states, policies, rewards
 
 
-# In[44]:
+# In[40]:
 
 
 def swap_data(
@@ -1910,16 +1879,12 @@ def swap_data(
     actual_state = states[swap_index]
     for i in range(swap_index + 1, len(states) + 1):
         prev_action = actions[i - 1]
-        triplet = map_action_to_triplet(
-            prev_action, vector_size=actual_state.shape[-1]
-        )
+        triplet = map_action_to_triplet(prev_action, vector_size=actual_state.shape[-1])
         vector_size = actual_state.shape[-1] // 3
         bs = actual_state.shape[0]
         u = triplet[:, :vector_size].reshape(bs, -1, 1, 1)
-        v = triplet[:, vector_size : 2 * vector_size].reshape(  # noqa E203
-            bs, 1, -1, 1
-        )
-        w = triplet[:, 2 * vector_size :].reshape(bs, 1, 1, -1)  # noqa E203
+        v = triplet[:, vector_size : 2 * vector_size].reshape(bs, 1, -1, 1)
+        w = triplet[:, 2 * vector_size :].reshape(bs, 1, 1, -1)
         reduced_state = u * v * w
         fut_state = actual_state[:, 0] - reduced_state
         new_state = actual_state[:, 1:].roll(1, dims=1)
@@ -2085,9 +2050,7 @@ class Trainer:
                 mc_n_sim,
                 N_bar,
             )
-            print(
-                f"Actor {actor_id} finished. Final reward: {rewards[-1]}"
-            )
+            print(f"Actor {actor_id} finished. Final reward: {rewards[-1]}")
             if rewards[-1] > best_reward:
                 print("New best actor!")
                 best_reward = rewards[-1]
@@ -2151,7 +2114,7 @@ class Trainer:
                     self.dataset.input_tensor, n_games, mc_n_sim, N_bar
                 )
             # save checkpoint
-            if (epoch + 1) % 100 == 0:
+            if (epoch + 1) % 50 == 0:
                 checkpoint_name = f"checkpoint_{epoch + 1}.pt"
                 checkpoint = {
                     "model_state_dict": self.model.state_dict(),
@@ -2163,13 +2126,10 @@ class Trainer:
                 )
                 print(f"Saving {checkpoint_name} in {self.checkpoint_dir}/")
                 self.dataset.save_game_data(self.checkpoint_data_dir)
-            # exit strategy
-            if self.dataset.games_are_good():
-                break
         print("Training finished")
 
 
-# In[45]:
+# In[41]:
 
 
 class LoadCheckpointDataOp(): # Operation
@@ -2202,7 +2162,7 @@ class LoadCheckpointDataOp(): # Operation
         return self._loaded
 
 
-# In[46]:
+# In[42]:
 
 
 class TrainingOperation(): # Operation
@@ -2336,16 +2296,11 @@ class TrainingOperation(): # Operation
         """Returns the trained model."""
         return self._trained_model
 
-    def get_result(self) -> Any:
-        pass
 
-
-# In[47]:
+# In[43]:
 
 
 class BuildModelOp():
-    """An operation which builds an OpenAlphaTensor model."""
-
     def __init__(self):
         super().__init__()
         self._model = None
@@ -2385,23 +2340,16 @@ class BuildModelOp():
         )
 
     def get_model(self) -> AlphaTensorModel:
-        """Returns the built model."""
         return self._model
 
-    def get_result(self) -> Any:
-        pass
 
-
-# In[48]:
+# In[44]:
 
 
 class SaveModelOp():
     """An operation which saves an OpenAlphaTensor model.
     The model parameters are stored in a json file, while the model weights
     are stored in a .pt file."""
-
-    def get_result(self) -> Any:
-        pass
 
     def execute(
         self,
@@ -2431,7 +2379,7 @@ class SaveModelOp():
             json.dump(model_params, f)
 
 
-# In[49]:
+# In[45]:
 
 
 class BuildOptimizerOp():
@@ -2472,11 +2420,8 @@ class BuildOptimizerOp():
         """Returns the built optimizer."""
         return self._optimizer
 
-    def get_result(self) -> Any:
-        pass
 
-
-# In[50]:
+# In[46]:
 
 
 def optimizer_to(optim: torch.optim.Optimizer, device: str):
@@ -2494,7 +2439,7 @@ def optimizer_to(optim: torch.optim.Optimizer, device: str):
                         subparam._grad.data = subparam._grad.data.to(device)
 
 
-# In[51]:
+# In[47]:
 
 
 class LoadCheckPointOp():
@@ -2560,11 +2505,8 @@ class LoadCheckPointOp():
         """Returns the optimizer loaded from the checkpoint."""
         return self._optimizer
 
-    def get_result(self) -> Any:
-        pass
 
-
-# In[52]:
+# In[48]:
 
 
 class TrainAlphaTensorRootOp():
@@ -2738,7 +2680,7 @@ class TrainAlphaTensorRootOp():
         return self._model
 
 
-# In[53]:
+# In[49]:
 
 
 def train_alpha_tensor(
@@ -2858,14 +2800,10 @@ def train_alpha_tensor(
     return root_op.get_result()
 
 
-# In[54]:
+# In[50]:
 
 
-from argparse import ArgumentParser
-
-
-def _compute_largest_divisor(n: int) -> int:
-    """Compute the largest divisor of n."""
+def compute_largest_divisor(n: int) -> int:
     for i in range(n // 2, 0, -1):
         if n % i == 0:
             return i
@@ -2873,37 +2811,37 @@ def _compute_largest_divisor(n: int) -> int:
 
 
 def main():
-    batch_size = 8
+    batch_size = 16
     max_epochs = 60000
-    action_memory = 7
-    optimizer = "adamw"
+    action_memory = 5
+    optimizer = "sgd"
     weight_decay = 1e-5
     lr = 1e-4
     lr_decay_factor = 0.1
-    lr_decay_steps = 50000
+    lr_decay_steps = 5000
     device = "cuda"
-    len_data = 2048
+    len_data = 512
     pct_synth = 0.8
-    n_synth_data = 1000
-    limit_rank = 100
+    n_synth_data = 50
+    limit_rank = 50
     alpha = 1.0
     beta = 1.0
     random_seed = 42
     checkpoint_dir = None
     checkpoint_data_dir = None
     matrix_size = 4
-    embed_dim = 1024
-    actions_sampled = 32
+    embed_dim = 512
+    actions_sampled = 16
     n_actors = 1
-    mc_n_sim = 50
-    n_cob = 100000
+    mc_n_sim = 10 # more
+    n_cob = 100
     cob_prob = 0.9983  # 1 - 0.0017
-    data_augmentation = 5
+    data_augmentation = True
     N_bar = 100
     save_dir = None
     cardinality_vector = 5
     input_size = matrix_size**2
-    n_steps = _compute_largest_divisor(input_size)
+    n_steps = compute_largest_divisor(input_size)
     n_actions = cardinality_vector ** (3 * input_size // n_steps)
     loss_params = (alpha, beta)
 
@@ -2942,7 +2880,7 @@ def main():
     )
 
 
-# In[ ]:
+# In[51]:
 
 
 main()
