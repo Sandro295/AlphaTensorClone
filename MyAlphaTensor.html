@@ -14593,7 +14593,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="n">BASE_CHECKPOINT_DIR</span> <span class="o">=</span> <span class="s2">&quot;checkpoints&quot;</span>
 <span class="n">BASE_CHECKPOINT_DATA_DIR</span> <span class="o">=</span> <span class="s2">&quot;games&quot;</span>
@@ -14732,8 +14732,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">y_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">proj_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-        <span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">proj_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
         <span class="n">multiplier</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># x_dim = size of the last dimension of x</span>
@@ -14829,8 +14829,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         <span class="n">emb_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">n_logits</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">n_feat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-        <span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">n_feat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
         <span class="n">n_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -15049,7 +15049,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         <span class="n">x_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">y_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">proj_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
-        <span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">multiplier</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># x_dim = size of the last dimension of x</span>
@@ -15162,7 +15162,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
             <span class="p">]</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attentive_modes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">TorsoAttentiveModes</span><span class="p">(</span><span class="n">out_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span> <span class="c1"># the paper has 8 attentive modes, but it takes a long time to train</span>
+            <span class="p">[</span><span class="n">TorsoAttentiveModes</span><span class="p">(</span><span class="n">out_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span> <span class="c1"># the paper has 8 attentive modes, but it takes a long time to train</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">scalars</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
@@ -15266,7 +15266,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Build value head&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value_head</span> <span class="o">=</span> <span class="n">ValueHead</span><span class="p">(</span>
-            <span class="mi">128</span>
+            <span class="mi">2048</span> 
         <span class="p">)</span>  <span class="c1"># value dependent on num_head and proj_dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">policy_loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quantile_loss_fn</span> <span class="o">=</span> <span class="n">QuantileLoss</span><span class="p">()</span>
@@ -15914,7 +15914,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         <span class="bp">self</span><span class="o">.</span><span class="n">synth_bool</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">len_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">synth_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synthetic_data_buffer</span><span class="p">),</span> <span class="n">len_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synthetic_data_buffer</span><span class="p">),</span> <span class="n">len_data</span><span class="p">,</span> \
+                <span class="n">replace</span><span class="o">=</span><span class="kc">True</span>
+                <span class="c1"># replace=False</span>
+
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">game_idx</span> <span class="o">=</span> <span class="kc">None</span>
@@ -15935,7 +15938,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
                     <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">synthetic_data_buffer</span><span class="p">),</span>
                     <span class="n">len_synth_data</span><span class="p">,</span>
-                    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="c1"># replace=False,</span>
+                    <span class="n">replace</span><span class="o">=</span><span class="kc">True</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_game_data_buffer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pct_best_game</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -16474,10 +16478,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <span class="n">actions</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n_steps</span> <span class="o">*</span> <span class="n">len_token</span><span class="p">)</span>
     <span class="n">vec_dim</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">vec_dim</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">vec_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">vec_dim</span> <span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">vec_dim</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>  <span class="c1"># noqa E203</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">vec_dim</span> <span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">vec_dim</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
         <span class="n">bs</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vec_dim</span><span class="p">,</span> <span class="mi">1</span>
     <span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">vec_dim</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vec_dim</span><span class="p">)</span>  <span class="c1"># noqa E203</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">vec_dim</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vec_dim</span><span class="p">)</span>
     <span class="n">reducing_tensor</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v</span> <span class="o">*</span> <span class="n">w</span>
     <span class="p">(</span>
         <span class="n">reducing_tensor</span><span class="p">,</span>
@@ -17021,14 +17025,17 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training AlphaTensor&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">states</span><span class="p">,</span> <span class="n">scalars</span><span class="p">,</span> <span class="n">policies</span><span class="p">,</span> <span class="n">rewards</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">dl</span><span class="p">):</span>
+        <span class="n">accumulation_steps</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">scalars</span><span class="p">,</span> <span class="n">policies</span><span class="p">,</span> <span class="n">rewards</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">dl</span><span class="p">)):</span>
             <span class="n">loss_policy</span><span class="p">,</span> <span class="n">loss_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
                 <span class="n">states</span><span class="p">,</span> <span class="n">scalars</span><span class="p">,</span> <span class="n">policies</span><span class="p">,</span> <span class="n">rewards</span>
             <span class="p">)</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">loss_policy</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="n">loss_value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
             <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">accumulation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="c1"># self.optimizer.step()</span>
             <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total loss: </span><span class="si">{</span><span class="n">total_loss</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -17930,18 +17937,18 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">8</span>
     <span class="n">max_epochs</span> <span class="o">=</span> <span class="mi">60000</span>
     <span class="n">action_memory</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="s2">&quot;sgd&quot;</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="s2">&quot;adamw&quot;</span>
     <span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">1e-5</span>
     <span class="n">lr</span> <span class="o">=</span> <span class="mf">1e-4</span>
     <span class="n">lr_decay_factor</span> <span class="o">=</span> <span class="mf">0.1</span>
     <span class="n">lr_decay_steps</span> <span class="o">=</span> <span class="mi">5000</span>
     <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span>
-    <span class="n">len_data</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">len_data</span> <span class="o">=</span> <span class="mi">2048</span>
     <span class="n">pct_synth</span> <span class="o">=</span> <span class="mf">0.8</span>
-    <span class="n">n_synth_data</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">n_synth_data</span> <span class="o">=</span> <span class="mi">100</span>
     <span class="n">limit_rank</span> <span class="o">=</span> <span class="mi">50</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -17952,7 +17959,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <span class="n">embed_dim</span> <span class="o">=</span> <span class="mi">512</span>
     <span class="n">actions_sampled</span> <span class="o">=</span> <span class="mi">16</span>
     <span class="n">n_actors</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">mc_n_sim</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># more</span>
+    <span class="n">mc_n_sim</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># more</span>
     <span class="n">n_cob</span> <span class="o">=</span> <span class="mi">100</span>
     <span class="n">cob_prob</span> <span class="o">=</span> <span class="mf">0.9983</span>  <span class="c1"># 1 - 0.0017</span>
     <span class="n">data_augmentation</span> <span class="o">=</span> <span class="kc">True</span>
@@ -18009,10 +18016,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">main</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># torch.cuda.empty_cache() # put it somewhere</span>
+<span class="n">main</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -18054,11 +18062,9 @@ Training AlphaTensor
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>  0%|          | 0/32 [00:00&lt;?, ?it/s]C:\Users\danil\AppData\Local\Temp\ipykernel_23160\1564220225.py:16: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+<pre>  0%|          | 0/128 [00:00&lt;?, ?it/s]C:\Users\danil\AppData\Local\Temp\ipykernel_24560\1564220225.py:16: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   scalars = torch.tensor(t_step).unsqueeze(-1).float()
-c:\Users\danil\anaconda3\lib\site-packages\torch\nn\modules\loss.py:988: UserWarning: Using a target size (torch.Size([16, 8])) that is different to the input size (torch.Size([16, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
-  return F.huber_loss(input, target, reduction=self.reduction, delta=self.delta)
-  3%|▎         | 1/32 [00:00&lt;00:26,  1.18it/s]100%|██████████| 32/32 [00:19&lt;00:00,  1.62it/s]
+100%|██████████| 128/128 [26:06&lt;00:00, 12.24s/it]
 </pre>
 </div>
 </div>
@@ -18070,7 +18076,7 @@ c:\Users\danil\anaconda3\lib\site-packages\torch\nn\modules\loss.py:988: UserWar
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Total loss: 35240.66162109375
+<pre>Total loss: 75838.78793334961
 Running actor 0 / 1
 current rank is 0
 </pre>
@@ -18084,7 +18090,7 @@ current rank is 0
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>C:\Users\danil\AppData\Local\Temp\ipykernel_23160\948959423.py:21: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+<pre>C:\Users\danil\AppData\Local\Temp\ipykernel_24560\948959423.py:21: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   torch.log(torch.tensor(action_val))
 </pre>
 </div>
@@ -18105,7 +18111,225 @@ current rank is 5
 current rank is 6
 current rank is 7
 current rank is 8
+current rank is 9
+current rank is 10
+current rank is 11
+current rank is 12
+current rank is 13
+current rank is 14
+current rank is 15
+current rank is 16
+current rank is 17
+current rank is 18
+current rank is 19
+current rank is 20
+current rank is 21
+current rank is 22
+current rank is 23
+current rank is 24
+current rank is 25
+current rank is 26
+current rank is 27
+current rank is 28
+current rank is 29
+current rank is 30
+current rank is 31
+current rank is 32
+current rank is 33
+current rank is 34
+current rank is 35
+current rank is 36
+current rank is 37
+current rank is 38
+current rank is 39
+current rank is 40
+current rank is 41
+current rank is 42
+current rank is 43
+current rank is 44
+current rank is 45
+current rank is 46
+current rank is 47
+current rank is 48
+current rank is 49
+Actor 0 finished. Final reward: -1
+New best actor!
 </pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">RuntimeError</span>                              Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=0&#39;&gt;1&lt;/a&gt;</span> main()
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">main</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=39&#39;&gt;40&lt;/a&gt;</span> n_actions = cardinality_vector ** (3 * input_size // n_steps)
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=40&#39;&gt;41&lt;/a&gt;</span> loss_params = (alpha, beta)
+<span class="ansi-green-intense-fg ansi-bold">---&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=42&#39;&gt;43&lt;/a&gt;</span> train_alpha_tensor(
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=43&#39;&gt;44&lt;/a&gt;</span>     tensor_length=action_memory + 1,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=44&#39;&gt;45&lt;/a&gt;</span>     input_size=input_size,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=45&#39;&gt;46&lt;/a&gt;</span>     scalars_size=1,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=46&#39;&gt;47&lt;/a&gt;</span>     emb_dim=embed_dim,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=47&#39;&gt;48&lt;/a&gt;</span>     n_steps=n_steps,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=48&#39;&gt;49&lt;/a&gt;</span>     n_logits=n_actions,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=49&#39;&gt;50&lt;/a&gt;</span>     n_samples=actions_sampled,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=50&#39;&gt;51&lt;/a&gt;</span>     device=device,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=51&#39;&gt;52&lt;/a&gt;</span>     len_data=len_data,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=52&#39;&gt;53&lt;/a&gt;</span>     n_synth_data=n_synth_data,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=53&#39;&gt;54&lt;/a&gt;</span>     pct_synth=pct_synth,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=54&#39;&gt;55&lt;/a&gt;</span>     batch_size=batch_size,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=55&#39;&gt;56&lt;/a&gt;</span>     epochs=max_epochs,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=56&#39;&gt;57&lt;/a&gt;</span>     lr=lr,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=57&#39;&gt;58&lt;/a&gt;</span>     lr_decay_factor=lr_decay_factor,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=58&#39;&gt;59&lt;/a&gt;</span>     lr_decay_steps=lr_decay_steps,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=59&#39;&gt;60&lt;/a&gt;</span>     weight_decay=weight_decay,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=60&#39;&gt;61&lt;/a&gt;</span>     optimizer_name=optimizer,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=61&#39;&gt;62&lt;/a&gt;</span>     loss_params=loss_params,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=62&#39;&gt;63&lt;/a&gt;</span>     limit_rank=limit_rank,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=63&#39;&gt;64&lt;/a&gt;</span>     random_seed=random_seed,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=64&#39;&gt;65&lt;/a&gt;</span>     checkpoint_dir=checkpoint_dir,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=65&#39;&gt;66&lt;/a&gt;</span>     checkpoint_data_dir=checkpoint_data_dir,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=66&#39;&gt;67&lt;/a&gt;</span>     n_actors=n_actors,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=67&#39;&gt;68&lt;/a&gt;</span>     mc_n_sim=mc_n_sim,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=68&#39;&gt;69&lt;/a&gt;</span>     n_cob=n_cob,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=69&#39;&gt;70&lt;/a&gt;</span>     cob_prob=cob_prob,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=70&#39;&gt;71&lt;/a&gt;</span>     data_augmentation=data_augmentation or False,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=71&#39;&gt;72&lt;/a&gt;</span>     N_bar=N_bar,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=72&#39;&gt;73&lt;/a&gt;</span>     extra_devices=[],
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=73&#39;&gt;74&lt;/a&gt;</span>     save_dir=save_dir,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=74&#39;&gt;75&lt;/a&gt;</span> )
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">train_alpha_tensor</span><span class="ansi-blue-intense-fg ansi-bold">(tensor_length, input_size, scalars_size, emb_dim, n_steps, n_logits, n_samples, optimizer_name, lr, lr_decay_factor, lr_decay_steps, weight_decay, loss_params, checkpoint_dir, checkpoint_data_dir, epochs, batch_size, len_data, n_synth_data, pct_synth, limit_rank, n_actors, mc_n_sim, N_bar, device, save_dir, random_seed, n_cob, cob_prob, data_augmentation, extra_devices)</span>
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=33&#39;&gt;34&lt;/a&gt;</span> &#34;&#34;&#34;Trains an AlphaTensor model to learn more efficient matrix
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=34&#39;&gt;35&lt;/a&gt;</span> multiplications and returns it.
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=35&#39;&gt;36&lt;/a&gt;</span> 
+<span class="ansi-green-intense-fg ansi-bold">   (...)</span>
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=78&#39;&gt;79&lt;/a&gt;</span>     training.
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=79&#39;&gt;80&lt;/a&gt;</span> &#34;&#34;&#34;
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=80&#39;&gt;81&lt;/a&gt;</span> root_op = TrainAlphaTensorRootOp()
+<span class="ansi-green-intense-fg ansi-bold">---&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=81&#39;&gt;82&lt;/a&gt;</span> root_op.execute(
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=82&#39;&gt;83&lt;/a&gt;</span>     tensor_length=tensor_length,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=83&#39;&gt;84&lt;/a&gt;</span>     input_size=input_size,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=84&#39;&gt;85&lt;/a&gt;</span>     scalars_size=scalars_size,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=85&#39;&gt;86&lt;/a&gt;</span>     emb_dim=emb_dim,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=86&#39;&gt;87&lt;/a&gt;</span>     n_steps=n_steps,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=87&#39;&gt;88&lt;/a&gt;</span>     n_logits=n_logits,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=88&#39;&gt;89&lt;/a&gt;</span>     n_samples=n_samples,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=89&#39;&gt;90&lt;/a&gt;</span>     optimizer_name=optimizer_name,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=90&#39;&gt;91&lt;/a&gt;</span>     lr=lr,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=91&#39;&gt;92&lt;/a&gt;</span>     lr_decay_factor=lr_decay_factor,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=92&#39;&gt;93&lt;/a&gt;</span>     lr_decay_steps=lr_decay_steps,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=93&#39;&gt;94&lt;/a&gt;</span>     weight_decay=weight_decay,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=94&#39;&gt;95&lt;/a&gt;</span>     loss_params=loss_params,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=95&#39;&gt;96&lt;/a&gt;</span>     checkpoint_dir=checkpoint_dir,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=96&#39;&gt;97&lt;/a&gt;</span>     checkpoint_data_dir=checkpoint_data_dir,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=97&#39;&gt;98&lt;/a&gt;</span>     epochs=epochs,
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=98&#39;&gt;99&lt;/a&gt;</span>     batch_size=batch_size,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=99&#39;&gt;100&lt;/a&gt;</span>     len_data=len_data,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=100&#39;&gt;101&lt;/a&gt;</span>     n_synth_data=n_synth_data,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=101&#39;&gt;102&lt;/a&gt;</span>     pct_synth=pct_synth,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=102&#39;&gt;103&lt;/a&gt;</span>     limit_rank=limit_rank,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=103&#39;&gt;104&lt;/a&gt;</span>     n_actors=n_actors,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=104&#39;&gt;105&lt;/a&gt;</span>     mc_n_sim=mc_n_sim,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=105&#39;&gt;106&lt;/a&gt;</span>     N_bar=N_bar,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=106&#39;&gt;107&lt;/a&gt;</span>     device=device,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=107&#39;&gt;108&lt;/a&gt;</span>     save_dir=save_dir,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=108&#39;&gt;109&lt;/a&gt;</span>     random_seed=random_seed,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=109&#39;&gt;110&lt;/a&gt;</span>     n_cob=n_cob,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=110&#39;&gt;111&lt;/a&gt;</span>     cob_prob=cob_prob,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=111&#39;&gt;112&lt;/a&gt;</span>     data_augmentation=data_augmentation,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=112&#39;&gt;113&lt;/a&gt;</span>     extra_devices=extra_devices,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=113&#39;&gt;114&lt;/a&gt;</span> )
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=114&#39;&gt;115&lt;/a&gt;</span> return root_op.get_result()
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">TrainAlphaTensorRootOp.execute</span><span class="ansi-blue-intense-fg ansi-bold">(self, tensor_length, input_size, scalars_size, emb_dim, n_steps, n_logits, n_samples, optimizer_name, lr, lr_decay_factor, lr_decay_steps, weight_decay, loss_params, checkpoint_dir, checkpoint_data_dir, epochs, batch_size, len_data, n_synth_data, pct_synth, limit_rank, n_actors, mc_n_sim, N_bar, device, save_dir, random_seed, n_cob, cob_prob, data_augmentation, extra_devices)</span>
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=129&#39;&gt;130&lt;/a&gt;</span>     self._optimizer = self._load_checkpoint_op.get_optimizer()
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=130&#39;&gt;131&lt;/a&gt;</span>     starting_epoch = self._load_checkpoint_op.get_last_epoch()
+<span class="ansi-green-intense-fg ansi-bold">--&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=131&#39;&gt;132&lt;/a&gt;</span>     self._training_op.execute(
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=132&#39;&gt;133&lt;/a&gt;</span>         model=self._model,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=133&#39;&gt;134&lt;/a&gt;</span>         input_size=input_size,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=134&#39;&gt;135&lt;/a&gt;</span>         n_steps=n_steps,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=135&#39;&gt;136&lt;/a&gt;</span>         batch_size=batch_size,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=136&#39;&gt;137&lt;/a&gt;</span>         optimizer=self._optimizer,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=137&#39;&gt;138&lt;/a&gt;</span>         device=device,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=138&#39;&gt;139&lt;/a&gt;</span>         len_data=len_data,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=139&#39;&gt;140&lt;/a&gt;</span>         pct_synth=pct_synth,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=140&#39;&gt;141&lt;/a&gt;</span>         n_synth_data=n_synth_data,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=141&#39;&gt;142&lt;/a&gt;</span>         limit_rank=limit_rank,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=142&#39;&gt;143&lt;/a&gt;</span>         max_epochs=epochs,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=143&#39;&gt;144&lt;/a&gt;</span>         n_actors=n_actors,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=144&#39;&gt;145&lt;/a&gt;</span>         mc_n_sim=mc_n_sim,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=145&#39;&gt;146&lt;/a&gt;</span>         N_bar=N_bar,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=146&#39;&gt;147&lt;/a&gt;</span>         last_epoch=starting_epoch,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=147&#39;&gt;148&lt;/a&gt;</span>         lr=lr,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=148&#39;&gt;149&lt;/a&gt;</span>         lr_decay_factor=lr_decay_factor,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=149&#39;&gt;150&lt;/a&gt;</span>         lr_decay_steps=lr_decay_steps,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=150&#39;&gt;151&lt;/a&gt;</span>         loss_params=loss_params,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=151&#39;&gt;152&lt;/a&gt;</span>         random_seed=random_seed,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=152&#39;&gt;153&lt;/a&gt;</span>         checkpoint_dir=checkpoint_dir,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=153&#39;&gt;154&lt;/a&gt;</span>         checkpoint_data_dir=checkpoint_data_dir,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=154&#39;&gt;155&lt;/a&gt;</span>         n_cob=n_cob,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=155&#39;&gt;156&lt;/a&gt;</span>         cob_prob=cob_prob,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=156&#39;&gt;157&lt;/a&gt;</span>         data_augmentation=data_augmentation,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=157&#39;&gt;158&lt;/a&gt;</span>         extra_devices=extra_devices,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=158&#39;&gt;159&lt;/a&gt;</span>     )
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=159&#39;&gt;160&lt;/a&gt;</span> if self._training_op.get_trained_model() is not None:
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=160&#39;&gt;161&lt;/a&gt;</span>     self._model = self._training_op.get_trained_model()
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">TrainingOperation.execute</span><span class="ansi-blue-intense-fg ansi-bold">(self, model, input_size, n_steps, batch_size, optimizer, device, len_data, pct_synth, n_synth_data, limit_rank, max_epochs, n_actors, mc_n_sim, N_bar, last_epoch, lr, lr_decay_factor, lr_decay_steps, loss_params, random_seed, checkpoint_dir, checkpoint_data_dir, n_cob, cob_prob, data_augmentation, extra_devices)</span>
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=113&#39;&gt;114&lt;/a&gt;</span> print(&#34;Start training&#34;)
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=114&#39;&gt;115&lt;/a&gt;</span> # train
+<span class="ansi-green-intense-fg ansi-bold">--&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=115&#39;&gt;116&lt;/a&gt;</span> trainer.train(
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=116&#39;&gt;117&lt;/a&gt;</span>     n_epochs=max_epochs,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=117&#39;&gt;118&lt;/a&gt;</span>     n_games=n_actors,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=118&#39;&gt;119&lt;/a&gt;</span>     mc_n_sim=mc_n_sim,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=119&#39;&gt;120&lt;/a&gt;</span>     N_bar=N_bar,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=120&#39;&gt;121&lt;/a&gt;</span>     starting_epoch=last_epoch,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=121&#39;&gt;122&lt;/a&gt;</span>     initial_lr=lr,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=122&#39;&gt;123&lt;/a&gt;</span>     lr_decay_factor=lr_decay_factor,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=123&#39;&gt;124&lt;/a&gt;</span>     lr_decay_steps=lr_decay_steps,
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=124&#39;&gt;125&lt;/a&gt;</span> )
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=125&#39;&gt;126&lt;/a&gt;</span> self._trained_model = trainer.model
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">Trainer.train</span><span class="ansi-blue-intense-fg ansi-bold">(self, n_epochs, n_games, mc_n_sim, N_bar, initial_lr, lr_decay_factor, lr_decay_steps, starting_epoch)</span>
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=248&#39;&gt;249&lt;/a&gt;</span> self.train_step()
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=249&#39;&gt;250&lt;/a&gt;</span> if epoch % 10 == 0:
+<span class="ansi-green-intense-fg ansi-bold">--&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=250&#39;&gt;251&lt;/a&gt;</span>     self.act_step(
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=251&#39;&gt;252&lt;/a&gt;</span>         self.dataset.input_tensor, n_games, mc_n_sim, N_bar
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=252&#39;&gt;253&lt;/a&gt;</span>     )
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=253&#39;&gt;254&lt;/a&gt;</span> # save checkpoint
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=254&#39;&gt;255&lt;/a&gt;</span> if (epoch + 1) % 50 == 0:
+
+File <span class="ansi-green-intense-fg ansi-bold">c:\Users\danil\anaconda3\lib\site-packages\torch\utils\_contextlib.py:115</span>, in <span class="ansi-cyan-fg">context_decorator.&lt;locals&gt;.decorate_context</span><span class="ansi-blue-intense-fg ansi-bold">(*args, **kwargs)</span>
+<span class="ansi-green-fg">    112</span> @functools.wraps(func)
+<span class="ansi-green-fg">    113</span> def decorate_context(*args, **kwargs):
+<span class="ansi-green-fg">    114</span>     with ctx_factory():
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 115</span>         return func(*args, **kwargs)
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">Trainer.act_step</span><span class="ansi-blue-intense-fg ansi-bold">(self, input_tensor, n_games, mc_n_sim, N_bar)</span>
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=195&#39;&gt;196&lt;/a&gt;</span>     self.dataset.add_game(states, policies, rewards)
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=196&#39;&gt;197&lt;/a&gt;</span>     if self.data_augmentation:
+<span class="ansi-green-intense-fg ansi-bold">--&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=197&#39;&gt;198&lt;/a&gt;</span>         states, policies = swap_data(states, policies)
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=198&#39;&gt;199&lt;/a&gt;</span>         self.dataset.add_game(states, policies, rewards)
+<span class="ansi-green-fg">    &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=199&#39;&gt;200&lt;/a&gt;</span> if best_game is not None:
+
+<span class="ansi-green-intense-fg ansi-bold">f:\University\unn\GPGPU_SCIENCE\AlphaTensorMyClone\MyAlphaTensor.ipynb Cell 57</span> line <span class="ansi-cyan-fg">swap_data</span><span class="ansi-blue-intense-fg ansi-bold">(states, actions)</span>
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=20&#39;&gt;21&lt;/a&gt;</span> vector_size = actual_state.shape[-1] // 3
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=21&#39;&gt;22&lt;/a&gt;</span> bs = actual_state.shape[0]
+<span class="ansi-green-intense-fg ansi-bold">---&gt; &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=22&#39;&gt;23&lt;/a&gt;</span> u = triplet[:, :vector_size].reshape(bs, -1, 1, 1)
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=23&#39;&gt;24&lt;/a&gt;</span> v = triplet[:, vector_size : 2 * vector_size].reshape(bs, 1, -1, 1)
+<span class="ansi-green-fg">     &lt;a href=&#39;vscode-notebook-cell:/f%3A/University/unn/GPGPU_SCIENCE/AlphaTensorMyClone/MyAlphaTensor.ipynb#Y106sZmlsZQ%3D%3D?line=24&#39;&gt;25&lt;/a&gt;</span> w = triplet[:, 2 * vector_size :].reshape(bs, 1, 1, -1)
+
+<span class="ansi-red-intense-fg ansi-bold">RuntimeError</span>: shape &#39;[6, -1, 1, 1]&#39; is invalid for input of size 640</pre>
 </div>
 </div>
 

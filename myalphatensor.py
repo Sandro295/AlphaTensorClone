@@ -16,7 +16,7 @@ import os
 import tempfile
 import json
 
-from typing import Tuple, Any, List, Callable, Dict
+from typing import Tuple, List, Callable, Dict
 
 BASE_CHECKPOINT_DIR = "checkpoints"
 BASE_CHECKPOINT_DATA_DIR = "games"
@@ -107,8 +107,8 @@ class AlphaMultiHeadAttention(torch.nn.Module):
         self,
         x_dim: int,
         y_dim: int,
-        proj_dim: int = 16,
-        n_heads: int = 8,
+        proj_dim: int = 32,
+        n_heads: int = 16,
         multiplier: int = 4,
     ):
         # x_dim = size of the last dimension of x
@@ -175,8 +175,8 @@ class PolicyHeadCore(torch.nn.Module):
         emb_dim: int,
         n_steps: int,
         n_logits: int,
-        n_feat: int = 16,
-        n_heads: int = 8,
+        n_feat: int = 64,
+        n_heads: int = 32,
         n_layers: int = 2,
     ):
         super().__init__()
@@ -336,7 +336,7 @@ class AlphaMultiHeadAttention(torch.nn.Module):
         x_dim: int,
         y_dim: int,
         proj_dim: int = 32,
-        n_heads: int = 16,
+        n_heads: int = 8,
         multiplier: int = 4,
     ):
         # x_dim = size of the last dimension of x
@@ -429,7 +429,7 @@ class TorsoModel(torch.nn.Module):
             ]
         )
         self.attentive_modes = torch.nn.ModuleList(
-            [TorsoAttentiveModes(out_size) for _ in range(4)] # the paper has 8 attentive modes, but it takes a long time to train
+            [TorsoAttentiveModes(out_size) for _ in range(8)] # the paper has 8 attentive modes, but it takes a long time to train
         )
 
     def forward(self, x: torch.Tensor, scalars: torch.Tensor):
@@ -513,7 +513,7 @@ class AlphaTensorModel(torch.nn.Module):
         )
         print("Build value head")
         self.value_head = ValueHead(
-            128
+            2048 
         )  # value dependent on num_head and proj_dim
         self.policy_loss_fn = torch.nn.CrossEntropyLoss(reduction="sum")
         self.quantile_loss_fn = QuantileLoss()
@@ -1054,7 +1054,10 @@ class TensorGameDataset(Dataset):
         self.synth_bool = torch.ones(len_data, dtype=torch.bool)
         self.synth_idx = torch.from_numpy(
             np.random.choice(
-                len(self.synthetic_data_buffer), len_data, replace=False
+                len(self.synthetic_data_buffer), len_data, \
+                replace=True
+                # replace=False
+
             )
         )
         self.game_idx = None
@@ -1075,7 +1078,8 @@ class TensorGameDataset(Dataset):
                 np.random.choice(
                     len(self.synthetic_data_buffer),
                     len_synth_data,
-                    replace=False,
+                    # replace=False,
+                    replace=True
                 )
             )
             if len(self.best_game_data_buffer) > 0 and self.pct_best_game > 0:
@@ -1525,10 +1529,10 @@ def extract_children_states_from_actions(
     actions = actions.reshape(bs, k, n_steps * len_token)
     vec_dim = state.shape[2]
     u = actions[:, :, :vec_dim].reshape(bs, k, vec_dim, 1, 1)
-    v = actions[:, :, vec_dim : 2 * vec_dim].reshape(  # noqa E203
+    v = actions[:, :, vec_dim : 2 * vec_dim].reshape(
         bs, k, 1, vec_dim, 1
     )
-    w = actions[:, :, 2 * vec_dim :].reshape(bs, k, 1, 1, vec_dim)  # noqa E203
+    w = actions[:, :, 2 * vec_dim :].reshape(bs, k, 1, 1, vec_dim)
     reducing_tensor = u * v * w
     (
         reducing_tensor,
@@ -2002,14 +2006,17 @@ class Trainer:
         total_loss = 0
         dl = DataLoader(self.dataset, batch_size=self.batch_size, shuffle=True)
         print("Training AlphaTensor")
-        for states, scalars, policies, rewards in tqdm.tqdm(dl):
+        accumulation_steps = 4
+        for i, states, scalars, policies, rewards in enumerate(tqdm.tqdm(dl)):
             loss_policy, loss_value = self.model(
                 states, scalars, policies, rewards
             )
             loss = self.alpha * loss_policy + self.beta * loss_value
             self.optimizer.zero_grad()
             loss.backward()
-            self.optimizer.step()
+            if i % accumulation_steps == 0:
+                self.optimizer.step()
+            # self.optimizer.step()
             total_loss += loss.item()
         print(f"Total loss: {total_loss}")
 
@@ -2811,18 +2818,18 @@ def compute_largest_divisor(n: int) -> int:
 
 
 def main():
-    batch_size = 16
+    batch_size = 8
     max_epochs = 60000
     action_memory = 5
-    optimizer = "sgd"
+    optimizer = "adamw"
     weight_decay = 1e-5
     lr = 1e-4
     lr_decay_factor = 0.1
     lr_decay_steps = 5000
     device = "cuda"
-    len_data = 512
+    len_data = 2048
     pct_synth = 0.8
-    n_synth_data = 50
+    n_synth_data = 100
     limit_rank = 50
     alpha = 1.0
     beta = 1.0
@@ -2833,7 +2840,7 @@ def main():
     embed_dim = 512
     actions_sampled = 16
     n_actors = 1
-    mc_n_sim = 10 # more
+    mc_n_sim = 2 # more
     n_cob = 100
     cob_prob = 0.9983  # 1 - 0.0017
     data_augmentation = True
@@ -2880,8 +2887,9 @@ def main():
     )
 
 
-# In[51]:
+# In[52]:
 
 
+# torch.cuda.empty_cache() # put it somewhere
 main()
 
