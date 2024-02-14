@@ -677,7 +677,22 @@ def map_action_to_triplet(
     return triplets.reshape((*action_shape, final_size))
 
 
-# In[69]:
+# In[118]:
+
+
+def compute_move(triplets: Tuple[torch.Tensor, torch.Tensor, torch.Tensor]):
+    """Computes the outer product of the three tensors in the triplet that
+    will be subtracted from the current state.
+
+    Args:
+        triplets (Tuple[torch.Tensor, torch.Tensor, torch.Tensor]): Tensors u,
+        v, and w.
+    """
+    u, v, w = triplets
+    return u.reshape(-1, 1, 1) * v.reshape(1, -1, 1) * w.reshape(1, 1, -1)
+
+
+# In[119]:
 
 
 def generate_synthetic_data(
@@ -711,15 +726,18 @@ def generate_synthetic_data(
                 v = prob_distr(tensor_size)
                 w = prob_distr(tensor_size)
                 generated_tensor = (
-                    u.reshape(-1, 1, 1)
-                    * v.reshape(1, -1, 1)
-                    * w.reshape(1, 1, -1)
+                    compute_move([u, v, w])
+                    # u.reshape(-1, 1, 1)
+                    # * v.reshape(1, -1, 1)
+                    # * w.reshape(1, 1, -1)
                 )
                 if not (generated_tensor == 0).all():
                     valid_triplet = True
                     list_of_triplets.append((u, v, w))
                     output_tensor += generated_tensor
         yield output_tensor, list_of_triplets
+
+# generate_synthetic_data(9, 100, 50, torch.rand(), )
 
 
 # # Datasets
@@ -730,21 +748,6 @@ def generate_synthetic_data(
 
 import tqdm
 from torch.utils.data import DataLoader
-
-
-# In[71]:
-
-
-def compute_move(triplets: Tuple[torch.Tensor, torch.Tensor, torch.Tensor]):
-    """Computes the outer product of the three tensors in the triplet that
-    will be subtracted from the current state.
-
-    Args:
-        triplets (Tuple[torch.Tensor, torch.Tensor, torch.Tensor]): Tensors u,
-        v, and w.
-    """
-    u, v, w = triplets
-    return u.reshape(-1, 1, 1) * v.reshape(1, -1, 1) * w.reshape(1, 1, -1)
 
 
 # In[72]:
@@ -826,7 +829,7 @@ class SyntheticDataBuffer(Dataset):
             os.path.join(self.save_dir, f"list_of_triplets_{i}.pt")
         )
         if j != self.limit_rank - 1:
-            moves = list_of_triplets[j + 1 :]  # noqa E203
+            moves = list_of_triplets[j + 1 :]
             output_tensor = self._apply_moves(output_tensor, moves)
         triplet = list_of_triplets[j]
         output_tensor = torch.stack(
@@ -836,7 +839,7 @@ class SyntheticDataBuffer(Dataset):
                     compute_move(t)
                     for t in reversed(
                         list_of_triplets[
-                            j + 1 : j + 1 + self.n_prev_actions  # noqa E203
+                            j + 1 : j + 1 + self.n_prev_actions
                         ]
                     )
                 ),
@@ -1187,7 +1190,7 @@ class TensorGameDataset(Dataset):
         return input_tensor
 
 
-# In[75]:
+# In[117]:
 
 
 def f_prob_distribution(size):
@@ -1510,8 +1513,8 @@ def extract_children_states_from_actions(
         [
             torch.cat(
                 [
-                    new_state[:, i : i + 1],  # noqa E203
-                    reducing_tensor[:, i : i + 1],  # noqa E203
+                    new_state[:, i : i + 1],
+                    reducing_tensor[:, i : i + 1],
                     rolling_states,
                 ],
                 dim=1,
@@ -1562,7 +1565,7 @@ def game_is_finished(state):
 
 @torch.no_grad()
 def simulate_game(
-    model,
+    model: AlphaTensorModel,
     state: torch.Tensor,
     t_time: int,
     max_steps: int,
@@ -1606,7 +1609,9 @@ def simulate_game(
         idx += 1
 
     # expansion
-    if idx <= max_steps:
+    if idx > max_steps:
+        leaf_q_value = -int(torch.linalg.matrix_rank(state).sum())
+    else:
         trajectory.append((state_hash, None))
         if not game_is_finished(extract_present_state(state)):
             state = state.to(model.device)
@@ -1640,8 +1645,6 @@ def simulate_game(
                 for fut_state in possible_states
             ]
             leaf_q_value = q_values
-    else:
-        leaf_q_value = -int(torch.linalg.matrix_rank(state).sum())
     # backup
     backward_pass(trajectory, states_dict, leaf_q_value=leaf_q_value)
 
@@ -1823,6 +1826,8 @@ def actor_prediction(
     states = [s.squeeze(0) for s in states]
     return states, policies, rewards
 
+
+# ## Training
 
 # In[89]:
 
@@ -2098,6 +2103,8 @@ class Trainer:
                 self.dataset.save_game_data(self.checkpoint_data_dir)
         print("Training finished")
 
+
+# ## Utility
 
 # In[90]:
 
